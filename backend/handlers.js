@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require("uuid");
 // use this data. Changes will persist until the server (backend) restarts.
 const { flights, reservations } = require("./data");
 
+// get flights
 const getFlights = (req, res) => {
   const data = flights;
   if (data) {
@@ -18,18 +19,18 @@ const getFlights = (req, res) => {
   }
 };
 
+// get single flight - fix this
 const getFlight = (req, res) => {
-  const flightId = req.params.flight.toUpperCase();
-  const flightNumber = flights.SA231;
-  const flight = flightNumber.find((flight) => {
-    return flightId === flight.id;
-  });
-  if (!flight) {
+  const flightNumber = req.params.flight.toUpperCase();
+
+  const findFlight = flights[flightNumber];
+  if (!findFlight) {
     res.status(404).json({ status: 404, message: "Flight not found" });
   }
-  res.status(200).json({ flight });
+  res.status(200).json(findFlight);
 };
 
+// adding reservations
 const addReservations = (req, res) => {
   const newRes = req.body;
   const givenName = req.body.givenName;
@@ -66,6 +67,7 @@ const addReservations = (req, res) => {
   });
 };
 
+// get all reservations
 const getReservations = (req, res) => {
   const data = reservations;
   if (data) {
@@ -78,6 +80,7 @@ const getReservations = (req, res) => {
   }
 };
 
+// get single reservation
 const getSingleReservation = (req, res) => {
   const seat = req.params.seat.toUpperCase();
   const findReservation = reservations.find((reservation) => {
@@ -89,6 +92,7 @@ const getSingleReservation = (req, res) => {
   res.status(200).json({ findReservation });
 };
 
+// delete reservation
 const deleteReservation = (req, res) => {
   const deleteRes = req.params.seat.toUpperCase();
   const matchSeat = reservations.find((res) => {
@@ -107,7 +111,7 @@ const deleteReservation = (req, res) => {
       .json({ status: 404, message: "Seat doesn't exist or wasn't reserved." });
   }
 };
-
+// update reservation
 const updateReservation = (req, res) => {};
 
 module.exports = {

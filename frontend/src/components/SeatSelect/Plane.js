@@ -1,37 +1,63 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import InputInfo from "./InputInfo";
 
-const Plane = ({}) => {
+const Plane = ({ flight }) => {
   const [seating, setSeating] = useState([]);
+  const [seatHasLoaded, setSeatHasLoaded] = useState(false);
 
+  // use effect and pass through flight - get single flight
   useEffect(() => {
-    // TODO: get seating data for selected flight
-  }, []);
+    fetch(`/api/${flight}`, {
+      headers: {
+        Accept: "application.json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setSeating(data);
+        setSeatHasLoaded(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [flight]);
 
   return (
-    <Wrapper>
-      {seating && seating.length > 0 ? (
-        seating.map((seat) => (
-          <SeatWrapper key={`seat-${seat.id}`}>
-            <label>
-              {seat.isAvailable ? (
-                <>
-                  <Seat type="radio" name="seat" onChange={() => {}} />
-                  <Available>{seat.id}</Available>
-                </>
-              ) : (
-                <Unavailable>{seat.id}</Unavailable>
-              )}
-            </label>
-          </SeatWrapper>
-        ))
-      ) : (
-        <Placeholder>Select a Flight to view seating.</Placeholder>
-      )}
-    </Wrapper>
+    <SelectionWrapper>
+      <Wrapper>
+        {seating && seating.length > 0 ? (
+          seating.map((seat) => (
+            <SeatWrapper key={`seat-${seat.id}`}>
+              <label>
+                {seat.isAvailable ? (
+                  <>
+                    <Seat type="radio" name="seat" onChange={() => {}} />
+                    <Available>{seat.id}</Available>
+                  </>
+                ) : (
+                  <Unavailable>{seat.id}</Unavailable>
+                )}
+              </label>
+            </SeatWrapper>
+          ))
+        ) : (
+          <Placeholder>Select a Flight to view seating.</Placeholder>
+        )}
+      </Wrapper>
+      <InputInfo />
+    </SelectionWrapper>
   );
 };
 
+const SelectionWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
 const Placeholder = styled.div`
   display: flex;
   justify-content: center;

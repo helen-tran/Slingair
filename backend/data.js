@@ -61,6 +61,7 @@ const flights = {
     { id: "10E", isAvailable: true },
     { id: "10F", isAvailable: true },
   ],
+  SA232: [{ id: "10F", isAvailable: true }],
 };
 
 const reservations = [

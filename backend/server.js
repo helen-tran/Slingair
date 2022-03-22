@@ -10,6 +10,7 @@ const {
   getReservations,
   getSingleReservation,
   deleteReservation,
+  updateReservation,
 } = require("./handlers");
 const PORT = process.env.PORT || 8000;
 express()
@@ -45,6 +46,9 @@ express()
 
   // delete reservation
   .delete("/reservations/:seat", deleteReservation)
+
+  // update reservation
+  .put("/reservations/:id", updateReservation)
   // ---------------------------------
   // Nothing to modify below this line
 
