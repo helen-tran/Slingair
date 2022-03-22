@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import InputInfo from "./InputInfo";
 
-const Plane = ({ flight }) => {
+const Plane = ({ flight, setSubStatus, subStatus, setInfo, info }) => {
   const [seating, setSeating] = useState([]);
   const [seatHasLoaded, setSeatHasLoaded] = useState(false);
 
@@ -24,7 +24,6 @@ const Plane = ({ flight }) => {
         console.log(err);
       });
   }, [flight]);
-
   return (
     <SelectionWrapper>
       <Wrapper>
@@ -47,7 +46,13 @@ const Plane = ({ flight }) => {
           <Placeholder>Select a Flight to view seating.</Placeholder>
         )}
       </Wrapper>
-      <InputInfo />
+      <InputInfo
+        flight={flight}
+        setSubStatus={setSubStatus}
+        subStatus={subStatus}
+        setInfo={setInfo}
+        info={info}
+      />
     </SelectionWrapper>
   );
 };

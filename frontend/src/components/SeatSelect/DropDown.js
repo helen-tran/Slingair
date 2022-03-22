@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useState } from "react";
-const DropDown = ({ flights, flight, setFlight }) => {
+const DropDown = ({ flights, flight, setFlight, info, setInfo }) => {
   if (!flights) {
     return <div></div>;
   }
@@ -13,10 +12,11 @@ const DropDown = ({ flights, flight, setFlight }) => {
   // console.log(flightName, "flightName");
   const handleChange = (e) => {
     setFlight(e.target.value);
+    setInfo({ ...info, flightNumber: e.target.value });
   };
 
   // The flight Number SA231
-  console.log(flight);
+  // console.log(flight);
   return (
     <Wrapper>
       <Title>Flight Number</Title>

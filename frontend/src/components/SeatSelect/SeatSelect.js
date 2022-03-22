@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import DropDown from "./DropDown";
-import InputInfo from "./InputInfo";
 import Plane from "./Plane";
+import Confirmation from "../Confirmation";
+
 const SeatSelect = ({}) => {
-  const [hasLoaded, setLoaded] = useState(false);
+  const [subStatus, setSubStatus] = useState("idle");
   const [flights, setFlights] = useState(null);
   const [flight, setFlight] = useState(null);
+  const [info, setInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    flightNumber: "",
+    seat: "",
+  });
   useEffect(() => {
     fetch("/api/flights", {
       headers: {
@@ -18,7 +26,6 @@ const SeatSelect = ({}) => {
       })
       .then((data) => {
         setFlights(data.data);
-        setLoaded(true);
       })
       .catch((err) => {
         console.log(err);
@@ -26,9 +33,27 @@ const SeatSelect = ({}) => {
   }, []);
   return (
     <Wrapper>
-      <DropDown flights={flights} flight={flight} setFlight={setFlight} />
-      <Title>Select your seat and Provide your information!</Title>
-      <Plane flight={flight} />
+      <DropDown
+        flights={flights}
+        flight={flight}
+        setFlight={setFlight}
+        setInfo={setInfo}
+        info={info}
+      />
+      {subStatus === "idle" ? (
+        <>
+          <Title>Select your seat and Provide your information!</Title>
+          <Plane
+            flight={flight}
+            setSubStatus={setSubStatus}
+            info={info}
+            setInfo={setInfo}
+            subStatus={subStatus}
+          />
+        </>
+      ) : (
+        <Confirmation />
+      )}
     </Wrapper>
   );
 };

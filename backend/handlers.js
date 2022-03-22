@@ -33,13 +33,13 @@ const getFlight = (req, res) => {
 // adding reservations
 const addReservations = (req, res) => {
   const newRes = req.body;
-  const givenName = req.body.givenName;
-  const surname = req.body.surname;
+  const givenName = req.body.firstName;
+  const surname = req.body.lastName;
   const email = req.body.email;
   const seat = req.body.seat;
+  const flight = req.body.flight;
   const id = uuidv4();
   newRes.id = id;
-  newRes.flight = "SA231";
 
   if (!id) {
     res
