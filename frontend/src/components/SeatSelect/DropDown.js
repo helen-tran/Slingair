@@ -1,29 +1,32 @@
 import React from "react";
 import styled from "styled-components";
-const DropDown = ({ flights, flight, setFlight, info, setInfo }) => {
+const DropDown = ({
+  flights,
+  flightNumber,
+  setFlightNumber,
+  info,
+  setInfo,
+}) => {
   if (!flights) {
     return <div></div>;
   }
-  // console.log(flights);
-  let flightName = [];
-  for (const property in flights) {
-    flightName.push(property);
-  }
+
   // console.log(flightName, "flightName");
   const handleChange = (e) => {
-    setFlight(e.target.value);
-    setInfo({ ...info, flightNumber: e.target.value });
+    setFlightNumber(e.target.value);
+    setInfo({ ...info, flight: e.target.value });
   };
 
   // The flight Number SA231
-  // console.log(flight);
+  // console.log(flightNumber);
   return (
     <Wrapper>
       <Title>Flight Number</Title>
       <WrapperDropDown name="flights" onChange={handleChange}>
         <DropDownItem>Select a flight</DropDownItem>
-        {flightName.map((flight) => {
-          return <DropDownItem>{flight}</DropDownItem>;
+        {flights.map((flight) => {
+          const flightNumber = flight.flightNumber;
+          return <DropDownItem>{flightNumber}</DropDownItem>;
         })}
       </WrapperDropDown>
     </Wrapper>

@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 // import seat selection into the prop
-const InputInfo = ({ flight, info, setInfo, setSubStatus, subStatus }) => {
+const InputInfo = ({ info, setInfo, setSubStatus, subStatus }) => {
   const [disabled, setDisabled] = useState(true);
-  const [errMessage, setErrMessage] = useState("");
 
-  // useEffect(() => {
-  //   Object.values(info).includes("")
-  //     ? setDisabled(true)
-  //     : setDisabled(false);
-  // ,[]}
+  useEffect(() => {
+    Object.values(info).includes("") ? setDisabled(true) : setDisabled(false);
+  }, [info]);
 
   const handleClick = (ev) => {
     ev.preventDefault();
@@ -24,14 +21,9 @@ const InputInfo = ({ flight, info, setInfo, setSubStatus, subStatus }) => {
       },
     })
       .then((res) => res.json())
-      .then((json) => {
-        const { status, error } = json;
-        if (status === "success") {
-          setSubStatus("confirmed");
-        } else if (error) {
-          setSubStatus("error");
-          setErrMessage("error");
-        }
+      .then((dataServer) => {
+        // console.log(dataServer, "dataServer");
+        return setInfo({ ...info, id: dataServer.data.id });
       });
   };
 
@@ -42,14 +34,16 @@ const InputInfo = ({ flight, info, setInfo, setSubStatus, subStatus }) => {
         placeholder="First Name"
         name="firstName"
         value={info.firstName}
-        onChange={(e) => setInfo({ ...info, firstName: e.target.value })}
+        onChange={(e) => setInfo({ ...info, givenName: e.target.value })}
+        required
       />
       <InputField
         type="text"
         placeholder="Last Name"
         name="lastName"
         value={info.lastName}
-        onChange={(e) => setInfo({ ...info, lastName: e.target.value })}
+        onChange={(e) => setInfo({ ...info, surname: e.target.value })}
+        required
       />
       <InputField
         type="text"
@@ -57,8 +51,9 @@ const InputInfo = ({ flight, info, setInfo, setSubStatus, subStatus }) => {
         name="email"
         value={info.email}
         onChange={(e) => setInfo({ ...info, email: e.target.value })}
+        required
       />
-      <ConfirmButton onClick={handleClick}>
+      <ConfirmButton onClick={handleClick} disabled={disabled}>
         {subStatus === "pending" && (
           <Loading>
             <div></div>

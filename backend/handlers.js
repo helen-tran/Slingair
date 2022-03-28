@@ -1,118 +1,289 @@
 "use strict";
+const { MongoClient, ObjectId } = require("mongodb");
+const assert = require("assert");
+
+require("dotenv").config();
+const { MONGO_URI } = process.env;
+
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
 
 // use this package to generate unique ids: https://www.npmjs.com/package/uuid
 const { v4: uuidv4 } = require("uuid");
 
 // use this data. Changes will persist until the server (backend) restarts.
-const { flights, reservations } = require("./data");
+// const { flights, reservations } = require("./data");
 
-// get flights
-const getFlights = (req, res) => {
-  const data = flights;
-  if (data) {
-    res.status(200).json({ status: 200, data });
-  } else {
-    res.status(404).json({
-      status: 404,
-      message: "There was an error getting the flights.",
-    });
-  }
-};
+// GET ALL FLIGHTS
+const getFlights = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
 
-// get single flight - fix this
-const getFlight = (req, res) => {
-  const flightNumber = req.params.flight.toUpperCase();
+    const db = client.db("Slingair");
 
-  const findFlight = flights[flightNumber];
-  if (!findFlight) {
-    res.status(404).json({ status: 404, message: "Flight not found" });
-  }
-  res.status(200).json(findFlight);
-};
-
-// adding reservations
-const addReservations = (req, res) => {
-  const newRes = req.body;
-  const givenName = req.body.firstName;
-  const surname = req.body.lastName;
-  const email = req.body.email;
-  const seat = req.body.seat;
-  const flight = req.body.flight;
-  const id = uuidv4();
-  newRes.id = id;
-
-  if (!id) {
-    res
-      .status(404)
-      .json({ status: 404, message: "Missing seating information." });
-  } else if (!givenName) {
-    res.status(404).json({ status: 404, message: "First Name is missing." });
-  } else if (!surname) {
-    res.status(404).json({ status: 404, message: "Surname is missing." });
-  } else if (!email) {
-    res.status(404).json({ status: 404, message: "Email is missing." });
-  } else if (!email.includes("@")) {
-    res
-      .status(404)
-      .json({ status: 404, message: "Enter a correct email address." });
-  } else if (!seat) {
-    res
-      .status(404)
-      .json({ status: 404, message: "Seat information is missing." });
-  }
-  reservations.push(newRes);
-  res.status(200).json({
-    status: 200,
-    message: "New reservation was added.",
-  });
-};
-
-// get all reservations
-const getReservations = (req, res) => {
-  const data = reservations;
-  if (data) {
-    res.status(200).json({ status: 200, data });
-  } else {
-    res.status(404).json({
-      status: 404,
-      message: "There was an error getting the reservations.",
-    });
-  }
-};
-
-// get single reservation
-const getSingleReservation = (req, res) => {
-  const seat = req.params.seat.toUpperCase();
-  const findReservation = reservations.find((reservation) => {
-    return String(reservation.seat) === String(seat);
-  });
-  if (!findReservation) {
-    res.status(404).json({ status: 404, message: "Reservation not found" });
-  }
-  res.status(200).json({ findReservation });
-};
-
-// delete reservation
-const deleteReservation = (req, res) => {
-  const deleteRes = req.params.seat.toUpperCase();
-  const matchSeat = reservations.find((res) => {
-    return res.seat === String(deleteRes);
-  });
-  if (matchSeat) {
-    const index = reservations.indexOf(matchSeat);
-    reservations.splice(index, 1);
-    res.status(200).json({
-      status: 200,
-      message: "Reservation was deleted.",
-    });
-  } else {
+    const mongoFlights = await db.collection("flights").find().toArray();
+    if (mongoFlights) {
+      return res
+        .status(200)
+        .json({ status: 200, message: "Flights found!", data: mongoFlights });
+    } else {
+      return res.status(404).json({
+        status: 404,
+        message: "Flights not found",
+        data: mongoFlights,
+      });
+    }
+  } catch (err) {
     return res
-      .status(404)
-      .json({ status: 404, message: "Seat doesn't exist or wasn't reserved." });
+      .status(500)
+      .json({ status: 500, data: req.body, message: err.message });
+  } finally {
+    client.close();
   }
 };
-// update reservation
-const updateReservation = (req, res) => {};
+
+// GET SINGLE FLIGHT
+const getFlight = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+
+  try {
+    await client.connect();
+    const db = client.db("Slingair");
+    const flightNumber = req.params.flightNumber;
+
+    const flight = await db.collection("flights").findOne({ flightNumber });
+    if (flight) {
+      return res
+        .status(200)
+        .json({ status: 200, message: "Found flights!", data: flight });
+    } else {
+      return res.status(404).json({
+        status: 404,
+        message: "Didn't find any flights",
+        data: flight,
+      });
+    }
+  } finally {
+    client.close();
+  }
+};
+
+// ADDING RESERVATION
+const addReservations = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
+    const db = client.db("Slingair");
+    const newRes = req.body;
+    const flightNumber = req.body.flight;
+    const seat = req.body.seat;
+    const id = uuidv4();
+    newRes.id = id;
+
+    const reservations = await db.collection("reservations").insertOne(newRes);
+    await db
+      .collection("flights")
+      .updateOne(
+        { flightNumber: flightNumber, "seats.id": seat },
+        { $set: { "seats.$.isAvailable": false } }
+      );
+    if (reservations) {
+      return res.status(200).json({
+        status: 200,
+        message: "Reservations added!",
+        data: newRes,
+      });
+    } else {
+      return res.status(404).json({
+        status: 404,
+        message: "Reservations fail to add",
+        data: newRes,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ status: 500, data: req.body, message: err.message });
+  } finally {
+    client.close();
+  }
+};
+
+// GET ALL RESERVATION
+const getReservations = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
+
+    const db = client.db("Slingair");
+
+    const reservations = await db.collection("reservations").find().toArray();
+    if (reservations) {
+      return res.status(200).json({
+        status: 200,
+        message: "Reservations found!",
+        data: reservations,
+      });
+    } else {
+      return res.status(404).json({
+        status: 404,
+        message: "Reservations not found",
+        data: reservations,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ status: 500, data: req.body, message: err.message });
+  } finally {
+    client.close();
+  }
+};
+
+// GET SINGLE RESERVATION
+const getSingleReservation = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+
+  try {
+    await client.connect();
+    const db = client.db("Slingair");
+    const seat = req.params.seat.toUpperCase();
+
+    const reservation = await db.collection("reservations").findOne({ seat });
+    if (reservation) {
+      return res.status(200).json({
+        status: 200,
+        message: "Found your reservation!",
+        data: reservation,
+      });
+    } else {
+      return res.status(404).json({
+        status: 404,
+        message: "Didn't find your reservation",
+        data: reservation,
+      });
+    }
+  } finally {
+    client.close();
+  }
+};
+
+// DELETE RESERVATION
+const deleteReservation = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+
+  try {
+    await client.connect();
+    const db = client.db("Slingair");
+    const flightNumber = req.params.flightNumber;
+
+    const flight = await db.collection("flights").findOne({ flightNumber });
+    if (flight) {
+      return res
+        .status(200)
+        .json({ status: 200, message: "Found flights!", data: flight });
+    } else {
+      return res.status(404).json({
+        status: 404,
+        message: "Didn't find any flights",
+        data: flight,
+      });
+    }
+  } finally {
+    client.close();
+  }
+};
+// UPDATE RESERVATION
+const updateReservation = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const flight = req.body.flight;
+  const seatRes = req.body.seat;
+  const givenName = req.body.givenName;
+  const surname = req.body.surname;
+  const email = req.body.email;
+  const id = req.params.idRes;
+
+  try {
+    await client.connect();
+    const db = client.db("Slingair");
+
+    const reservation = await db
+      .collection("reservations")
+      .findOne({ _id: ObjectId(id) });
+
+    if (!reservation) {
+      return res.status(404).json({
+        status: 404,
+        message: "Reservation not found or reservation number is invalid.",
+        data: reservation,
+      });
+    }
+    // update flight
+    if (flight) {
+      await db
+        .collection("reservations")
+        .updateOne({ _id: ObjectId(id) }, { $set: { flightNumber: flight } });
+    }
+    // update seat
+    if (seatRes) {
+      const flightData = await db
+        .collection("flights")
+        .findOne({ flightNumber: flight });
+
+      const matchSeat = flightData.seats.find((seat) => {
+        return seatRes === seat.id;
+      });
+
+      if (matchSeat.isAvailable) {
+        await db
+          .collection("reservations")
+          .updateOne({ _id: ObjectId(id) }, { $set: { seat: seatRes } });
+      } else {
+        return res.status(400).json({
+          status: 400,
+          message: "Please choose another seat, the chosen seat is reserved.",
+          data: matchSeat,
+        });
+      }
+    }
+    // update given name
+    if (givenName) {
+      await db
+        .collection("reservations")
+        .updateOne({ _id: ObjectId(id) }, { $set: { givenName: givenName } });
+    }
+    // update surname
+    if (surname) {
+      await db
+        .collection("reservations")
+        .updateOne({ _id: ObjectId(id) }, { $set: { surname: surname } });
+    }
+    // update email
+    if (email) {
+      await db
+        .collection("reservations")
+        .updateOne({ _id: ObjectId(id) }, { $set: { email: email } });
+    }
+
+    const updateData = await db
+      .collection("reservations")
+      .findOne({ _id: ObjectId(id) });
+    return res.status(200).json({
+      status: 200,
+      message: `The reservation has been updated!`,
+      data: updateData,
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ status: 500, data: req.body, message: err.message });
+  } finally {
+    client.close();
+  }
+};
 
 module.exports = {
   getFlights,

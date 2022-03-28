@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import InputInfo from "./InputInfo";
 
-const Plane = ({ flight, setSubStatus, subStatus, setInfo, info }) => {
+const Plane = ({ flightNumber, setSubStatus, subStatus, setInfo, info }) => {
   const [seating, setSeating] = useState([]);
-  const [seatHasLoaded, setSeatHasLoaded] = useState(false);
-
+  const [checked, setChecked] = useState("");
   // use effect and pass through flight - get single flight
   useEffect(() => {
-    fetch(`/api/${flight}`, {
+    fetch(`/api/${flightNumber}`, {
       headers: {
         Accept: "application.json",
       },
@@ -17,13 +16,14 @@ const Plane = ({ flight, setSubStatus, subStatus, setInfo, info }) => {
         return res.json();
       })
       .then((data) => {
-        setSeating(data);
-        setSeatHasLoaded(true);
+        // console.log(data.data.seats);
+        setSeating(data.data.seats);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [flight]);
+  }, [flightNumber]);
+
   return (
     <SelectionWrapper>
       <Wrapper>
@@ -33,8 +33,24 @@ const Plane = ({ flight, setSubStatus, subStatus, setInfo, info }) => {
               <label>
                 {seat.isAvailable ? (
                   <>
-                    <Seat type="radio" name="seat" onChange={() => {}} />
-                    <Available>{seat.id}</Available>
+                    <Seat
+                      type="radio"
+                      name="seat"
+                      id="seat"
+                      onChange={() => {
+                        setInfo({ ...info, seat: seat.id });
+                        setChecked(seat.id);
+                      }}
+                    />
+                    <Available
+                      style={{
+                        background:
+                          checked === seat.id && "var(--color-alabama-crimson)",
+                        color: checked === seat.id && "#fff",
+                      }}
+                    >
+                      {seat.id}
+                    </Available>
                   </>
                 ) : (
                   <Unavailable>{seat.id}</Unavailable>
@@ -47,7 +63,7 @@ const Plane = ({ flight, setSubStatus, subStatus, setInfo, info }) => {
         )}
       </Wrapper>
       <InputInfo
-        flight={flight}
+        flightNumber={flightNumber}
         setSubStatus={setSubStatus}
         subStatus={subStatus}
         setInfo={setInfo}
@@ -99,7 +115,7 @@ const SeatWrapper = styled.li`
   width: 30px;
 `;
 const Seat = styled.input`
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   height: 30px;
   width: 30px;

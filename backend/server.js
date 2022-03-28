@@ -33,7 +33,7 @@ express()
   .get("/api/flights", getFlights)
 
   // getting flight
-  .get("/api/:flight", getFlight)
+  .get("/api/:flightNumber", getFlight)
 
   // adding reservation
   .post("/reservations", addReservations)
@@ -42,13 +42,13 @@ express()
   .get("/reservations", getReservations)
 
   // get a single reservation
-  .get("/reservations/:seat", getSingleReservation)
+  .get("/reservation/:seat", getSingleReservation)
 
   // delete reservation
   .delete("/reservations/:seat", deleteReservation)
 
   // update reservation
-  .put("/reservations/:id", updateReservation)
+  .put("/reservations/:idRes", updateReservation)
   // ---------------------------------
   // Nothing to modify below this line
 

@@ -1,5 +1,4 @@
 const { flights } = require("./data");
-const flightsData = flights.SA231;
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
@@ -16,8 +15,15 @@ const flightsImport = async () => {
     await client.connect();
     const db = client.db("Slingair");
     console.log("connected");
-    // console.log(flightsData);
-    const result = await db.collection("flights").insertMany(flightsData);
+    const flightNumbers = Object.keys(flights);
+    const data = flightNumbers.map((flightNumber) => {
+      return {
+        flightNumber: flightNumber,
+        seats: flights[flightNumber],
+      };
+    });
+
+    const result = await db.collection("flights").insertMany(data);
     assert.equal(1, result.insertedCount);
     const assert = require("assert");
   } catch (err) {

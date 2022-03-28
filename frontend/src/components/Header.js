@@ -6,7 +6,7 @@ import slingairLogo from "../assets/logo_text.png";
 
 const Header = () => (
   <Wrapper>
-    <Logo>
+    <Logo to="/">
       <h1>Sling Airlines</h1>
     </Logo>
     <Nav>
@@ -26,7 +26,7 @@ const Wrapper = styled.header`
   height: 110px;
   padding: var(--padding-page) 18px;
 `;
-const Logo = styled.div`
+const Logo = styled(NavLink)`
   background-image: url(${slingairLogo});
   background-repeat: no-repeat;
   background-position: left center, right center;
