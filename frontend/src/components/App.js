@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import SeatSelect from "./SeatSelect";
+import Home from "./Home";
 import Confirmation from "./Confirmation";
 import GlobalStyles from "./GlobalStyles";
 import Reservation from "./Reservation/Reservation";
@@ -17,7 +17,7 @@ const App = () => {
       <Main>
         <Switch>
           <Route exact path="/">
-            <SeatSelect />
+            <Home />
           </Route>
           <Route exact path="/confirmed">
             <Confirmation />

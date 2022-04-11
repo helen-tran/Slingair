@@ -2,15 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-import slingairLogo from "../assets/logo_text.png";
+import LogoSlingair from "../assets/Logo.svg";
 
 const Header = () => (
   <Wrapper>
     <Logo to="/">
-      <h1>Sling Airlines</h1>
+      <LogoImage src={LogoSlingair} />
+      <TagLine>The only way to fly!</TagLine>
     </Logo>
     <Nav>
-      {/* TODO: only show links if the user has a reservation already */}
       <>
         <StyledNavLink to="/view-reservation">Reservation</StyledNavLink>
         <StyledNavLink to="/profile">Profile</StyledNavLink>
@@ -22,30 +22,33 @@ const Header = () => (
 const Wrapper = styled.header`
   display: flex;
   justify-content: space-between;
-  background: var(--color-alabama-crimson);
   height: 110px;
   padding: var(--padding-page) 18px;
 `;
 const Logo = styled(NavLink)`
-  background-image: url(${slingairLogo});
-  background-repeat: no-repeat;
-  background-position: left center, right center;
-  background-size: contain;
-  overflow: hidden;
-  text-indent: -1000px;
-  height: 60px;
-  width: 550px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
 `;
+const LogoImage = styled.img`
+  width: 800px;
+  height: auto;
+`;
+const TagLine = styled.p`
+  color: var(--color-blue);
+  padding-top: 20px;
+  font-size: 30px;
+  font-weight: 400;
+`;
+
 const Nav = styled.nav`
   display: flex;
   justify-content: flex-end;
   align-items: center;
 `;
 const StyledNavLink = styled(NavLink)`
-  background: var(--color-selective-yellow);
   border: 1px solid transparent;
   border-radius: 4px;
-  color: var(--color-alabama-crimson);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,6 +60,7 @@ const StyledNavLink = styled(NavLink)`
   width: 100%;
   text-decoration: none;
   transition: all ease 400ms;
+  color: var(--color-blue);
 
   &:disabled {
     cursor: not-allowed;
@@ -64,9 +68,7 @@ const StyledNavLink = styled(NavLink)`
   }
 
   &:hover {
-    background: var(--color-alabama-crimson);
-    color: var(--color-selective-yellow);
-    border-color: var(--color-selective-yellow);
+    font-weight: 600;
   }
 `;
 

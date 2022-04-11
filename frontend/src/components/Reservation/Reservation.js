@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import InputReservation from "./InputReservation";
 import ReservationInfo from "./ReservationInfo";
+
 const Reservation = () => {
   const [seat, setSeat] = useState("");
   const [resInfo, setResInfo] = useState(null);
@@ -26,6 +27,12 @@ const Reservation = () => {
     </PageWrapper>
   );
 };
-const PageWrapper = styled.div``;
+const PageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-top: 100px;
+`;
 
 export default Reservation;

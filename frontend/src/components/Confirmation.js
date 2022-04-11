@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import tombstone from "../assets/tombstone.png";
-
 const Confirmation = ({ info }) => {
   const firstName =
     info.givenName.charAt(0).toUpperCase() + info.givenName.slice(1);
@@ -25,7 +23,6 @@ const Confirmation = ({ info }) => {
           </WrapperInfo>
         </Wrapper>
       )}
-      <Image src={tombstone} />
     </PageWrapper>
   );
 };

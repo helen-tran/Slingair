@@ -2,13 +2,9 @@ import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
   :root {
-    --color-cadmium-red: #D80026;
-    --color-alabama-crimson: #AA001E;
-    --color-orange: #F79D00;
-    --color-selective-yellow: #FDBB01;
-    --color-desert-sand: #E3C4A6;
-    --font-heading: 'Permanent Marker', Arial, Helvetica, sans-serif;
-    --font-body: 'Kosugi', Arial, Helvetica, sans-serif;
+    --color-blue: #20388A;
+    --font-heading: 'hobeaux', sans-serif;
+    --font-body: 'hobeaux', sans-serif;
     --padding-page: 24px;
   }
 
@@ -44,6 +40,7 @@ export default createGlobalStyle`
   }
   body {
       line-height: 1;
+      background: #F6F0E6;
   }
   ol, ul {
       list-style: none;

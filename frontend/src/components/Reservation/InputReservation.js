@@ -30,11 +30,16 @@ const InputReservation = ({ seat, setSeat, dataInputted, setDataInputted }) => {
   );
 };
 const PageWrapper = styled.div`
-  position: fixed;
-  top: 50%;
+  border: 2px solid var(--color-blue);
+  border-radius: 30px;
+  display: flex;
+  width: 500px;
+  justify-content: center;
+  /* position: fixed;
+  top: 45%;
   left: 50%;
   margin-top: -140px;
-  margin-left: -200px;
+  margin-left: -200px; */
 `;
 
 const Wrapper = styled.div`
@@ -42,7 +47,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 3px solid var(--color-alabama-crimson);
   width: 400px;
   height: 280px;
   border-radius: 10px;
@@ -52,13 +56,23 @@ const InputField = styled.input`
   margin-top: 5px;
   margin-bottom: 5px;
   font-size: 20px;
+  border: 2px solid var(--color-blue);
+  border-radius: 30px;
 `;
 const ConfirmButton = styled.button`
   width: 300px;
   border: none;
-  background: var(--color-alabama-crimson);
-  border-radius: 5px;
-  margin-top: 5px;
+  text-transform: uppercase;
+  margin-top: 20px;
+  background: var(--color-blue);
+  border-radius: 30px;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-family: "Hobeaux";
+  font-weight: 900;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
   &:disabled {
     cursor: not-allowed;
     opacity: 0.6;

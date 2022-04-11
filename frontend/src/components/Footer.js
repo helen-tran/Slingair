@@ -1,29 +1,51 @@
 import React from "react";
 import styled from "styled-components";
 
-import logoImg from "../assets/air-sling.png";
+import LogoSlingair from "../assets/Logo.svg";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => (
   <Wrapper>
-    <Logo src={logoImg} />
-    <Text>The only way to fly!</Text>
+    <PageWrapper>
+      <Page to="/">Contact Us</Page>
+      <Page to="/">About</Page>
+      <Page to="/">Reservation</Page>
+      <Page to="/">Profile</Page>
+    </PageWrapper>
+    <Logo src={LogoSlingair} />
   </Wrapper>
 );
 
 const Wrapper = styled.div`
   display: flex;
-  margin: auto auto 24px;
-  height: 60px;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 40px;
+  border-top: 2px solid var(--color-blue);
+  padding-bottom: 40px;
+`;
+
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 const Logo = styled.img`
+  display: flex;
+  align-items: flex-end
   height: 100%;
+  margin-right: 40px;
+  width: 600px;
+
 `;
-const Text = styled.p`
-  color: var(--color-alabama-crimson);
-  font-family: var(--font-heading);
-  font-size: 36px;
-  text-align: center;
-  margin: 12px 0 0 24px;
+
+const Page = styled(NavLink)`
+  font-weight: 300;
+  font-family: hobeaux, sans-serif;
+  font-size: 26px;
+  text-decoration: none;
+  color: var(--color-blue);
+  margin-left: 40px;
+  padding-top: 40px;
 `;
 
 export default Footer;
