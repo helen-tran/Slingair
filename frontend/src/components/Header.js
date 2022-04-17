@@ -13,7 +13,7 @@ const Header = () => (
     <Nav>
       <>
         <StyledNavLink to="/view-reservation">Reservation</StyledNavLink>
-        <StyledNavLink to="/profile">Profile</StyledNavLink>
+        <StyledNavLink to="">Profile</StyledNavLink>
       </>
     </Nav>
   </Wrapper>

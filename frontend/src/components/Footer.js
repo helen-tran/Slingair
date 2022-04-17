@@ -7,10 +7,10 @@ import { NavLink } from "react-router-dom";
 const Footer = () => (
   <Wrapper>
     <PageWrapper>
-      <Page to="/">Contact Us</Page>
-      <Page to="/">About</Page>
-      <Page to="/">Reservation</Page>
-      <Page to="/">Profile</Page>
+      <Page to="">Contact Us</Page>
+      <Page to="">About</Page>
+      <Page to="/view-reservation">Reservation</Page>
+      <Page to="">Profile</Page>
     </PageWrapper>
     <Logo src={LogoSlingair} />
   </Wrapper>

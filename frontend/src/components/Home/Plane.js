@@ -14,6 +14,7 @@ const Plane = ({
 }) => {
   const [seating, setSeating] = useState([]);
   const [checked, setChecked] = useState("");
+
   // use effect and pass through flight - get single flight
   useEffect(() => {
     fetch(`/api/${flightNumber}`, {
@@ -25,7 +26,6 @@ const Plane = ({
         return res.json();
       })
       .then((data) => {
-        // console.log(data.data.seats);
         setSeating(data.data.seats);
       })
       .catch((err) => {
@@ -50,43 +50,43 @@ const Plane = ({
           setInfo={setInfo}
           info={info}
         />
-        <WrapperSpacing>
-          <Wrapper>
-            {seating &&
-              seating.length > 0 &&
-              seating.map((seat) => (
-                <SeatWrapper key={`seat-${seat.id}`}>
-                  <label>
-                    {seat.isAvailable ? (
-                      <>
-                        <Seat
-                          type="radio"
-                          name="seat"
-                          id="seat"
-                          onChange={() => {
-                            setInfo({ ...info, seat: seat.id });
-                            setChecked(seat.id);
-                          }}
-                        />
-                        <Available
-                          style={{
-                            background:
-                              checked === seat.id &&
-                              "var(--color-alabama-crimson)",
-                            color: checked === seat.id && "#fff",
-                          }}
-                        >
-                          {seat.id}
-                        </Available>
-                      </>
-                    ) : (
-                      <Unavailable>{seat.id}</Unavailable>
-                    )}
-                  </label>
-                </SeatWrapper>
-              ))}
-          </Wrapper>
-        </WrapperSpacing>
+
+        <Wrapper>
+          {seating && seating.length > 0 ? (
+            seating.map((seat) => (
+              <SeatWrapper key={`seat-${seat.id}`}>
+                <label>
+                  {seat.isAvailable ? (
+                    <>
+                      <Seat
+                        type="radio"
+                        name="seat"
+                        id="seat"
+                        onChange={() => {
+                          setInfo({ ...info, seat: seat.id });
+                          setChecked(seat.id);
+                        }}
+                      />
+                      <Available
+                        style={{
+                          background:
+                            checked === seat.id && "var(--color-blue)",
+                          color: checked === seat.id && "#fff",
+                        }}
+                      >
+                        {seat.id}
+                      </Available>
+                    </>
+                  ) : (
+                    <Unavailable>{seat.id}</Unavailable>
+                  )}
+                </label>
+              </SeatWrapper>
+            ))
+          ) : (
+            <Placeholder>Please select a flight to book a seat</Placeholder>
+          )}
+        </Wrapper>
       </PlaneWrapper>
     </SelectionWrapper>
   );
@@ -108,13 +108,6 @@ const SelectionWrapper = styled.div`
   justify-content: center;
 `;
 
-const WrapperSpacing = styled.div`
-  border-top: 2px solid var(--color-blue);
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 const Wrapper = styled.ol`
   display: grid;
   grid-template-rows: repeat(10, 30px);
@@ -131,7 +124,7 @@ const SeatWrapper = styled.li`
   height: 30px;
   width: 30px;
 `;
-const Seat = styled.input`
+const Seat = styled.input`-
   opacity: 1;
   position: absolute;
   height: 30px;
@@ -142,7 +135,7 @@ const Seat = styled.input`
     span {
       color: #fff;
       background: var(--color-blue);
-      font-weight: 700;
+      font-weight: 400;
     }
   }
 `;
@@ -171,13 +164,18 @@ const Available = styled(SeatNumber)`
   &:hover {
     background: var(--color-blue);
     color: #fff;
-    font-weight: 700;
+    font-weight: 400;
   }
 `;
 const Unavailable = styled(SeatNumber)`
-  background: var(--color-selective-yellow);
   cursor: not-allowed;
   opacity: 0.4;
 `;
-
+const Placeholder = styled.div`
+  text-align: center;
+  color: var(--color-blue);
+  font-family: "Hobeaux";
+  font-size: 32px;
+  width: 460px;
+`;
 export default Plane;

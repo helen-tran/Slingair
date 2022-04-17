@@ -5,8 +5,6 @@ import Confirmation from "../Confirmation";
 import Airplane from "/Users/helen-tran/Documents/Concordia-Bootcamp/Portfolio/Slingair/frontend/src/assets/Airplane.jpg";
 import Passport from "/Users/helen-tran/Documents/Concordia-Bootcamp/Portfolio/Slingair/frontend/src/assets/Passport.jpg";
 import { NavLink } from "react-router-dom";
-import Footer from "../Footer";
-
 const SeatSelect = () => {
   const [subStatus, setSubStatus] = useState("idle");
   const [flights, setFlights] = useState(null);
@@ -51,25 +49,25 @@ const SeatSelect = () => {
               flights={flights}
               setFlights={setFlights}
             />
+            <BottomWrapper>
+              <BoxWrapper to="/view-reservation">
+                <Img src={Airplane} />
+                <WrapperTitle>
+                  <PageTitle>Reservation</PageTitle>
+                </WrapperTitle>
+              </BoxWrapper>
+              <BoxWrapper to="">
+                <Img src={Passport} />
+                <WrapperTitle>
+                  <PageTitle>Profile</PageTitle>
+                </WrapperTitle>
+              </BoxWrapper>
+            </BottomWrapper>
           </>
         ) : (
           <Confirmation info={info} />
         )}
       </Wrapper>
-      <BottomWrapper>
-        <BoxWrapper to="/view-reservation">
-          <Img src={Airplane} />
-          <WrapperTitle>
-            <PageTitle>Reservation</PageTitle>
-          </WrapperTitle>
-        </BoxWrapper>
-        <BoxWrapper to="/profile">
-          <Img src={Passport} />
-          <WrapperTitle>
-            <PageTitle>Profile</PageTitle>
-          </WrapperTitle>
-        </BoxWrapper>
-      </BottomWrapper>
     </>
   );
 };

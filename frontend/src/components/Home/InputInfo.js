@@ -22,7 +22,6 @@ const InputInfo = ({ info, setInfo, setSubStatus, subStatus }) => {
     })
       .then((res) => res.json())
       .then((dataServer) => {
-        // console.log(dataServer, "dataServer");
         return setInfo({ ...info, id: dataServer.data.id });
       });
   };
@@ -30,7 +29,7 @@ const InputInfo = ({ info, setInfo, setSubStatus, subStatus }) => {
   return (
     <Wrapper>
       <Title>ENTER INFORMATION</Title>
-      <Line>
+      <InputWrapper>
         <InputField
           type="text"
           placeholder="First Name"
@@ -64,7 +63,7 @@ const InputInfo = ({ info, setInfo, setSubStatus, subStatus }) => {
           )}
           {subStatus === "idle" && <span class="button-label">Submit</span>}
         </ConfirmButton>
-      </Line>
+      </InputWrapper>
     </Wrapper>
   );
 };
@@ -73,7 +72,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   border: 2px solid var(--color-blue);
   width: 50%;
-  height: 500px;
   margin-right: 40px;
   border-radius: 30px;
 `;
@@ -84,6 +82,15 @@ const Title = styled.h2`
   font-weight: 900;
   font-size: 50px;
   text-align: center;
+`;
+const InputWrapper = styled.div`
+  display: flex;
+  border-top: 2px solid var(--color-blue);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 45px;
+  padding-bottom: 50px;
 `;
 const InputField = styled.input`
   width: 470px;
@@ -99,7 +106,7 @@ const ConfirmButton = styled.button`
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  width: 100px;
+  width: 150px;
   border: none;
   background: var(--color-blue);
   border-radius: 20px;
@@ -146,12 +153,5 @@ const Loading = styled.div`
       animation-delay: -0.5s;
     }
   }
-`;
-const Line = styled.div`
-  border-top: 2px solid var(--color-blue);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 `;
 export default InputInfo;

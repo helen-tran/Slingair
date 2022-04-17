@@ -11,18 +11,17 @@ const DropDown = ({
     return <div></div>;
   }
 
-  // console.log(flightName, "flightName");
   const handleChange = (e) => {
     setFlightNumber(e.target.value);
     setInfo({ ...info, flight: e.target.value });
   };
 
-  // The flight Number SA231
-  // console.log(flightNumber);
   return (
     <Wrapper>
       <WrapperDropDown name="flights" onChange={handleChange}>
-        <DropDownItem>Select a flight</DropDownItem>
+        <DropDownItem selected disabled>
+          Select a flight
+        </DropDownItem>
         {flights.map((flight) => {
           const flightNumber = flight.flightNumber;
           return <DropDownItem>{flightNumber}</DropDownItem>;
@@ -36,17 +35,10 @@ const Wrapper = styled.form`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   color: var(--color-blue);
-`;
-const Title = styled.h2`
-  display: flex;
-  align-items: center;
-  padding: 30px 0 30px 0;
-  margin-right: 30px;
-  font-weight: 900;
-  color: var(--color-blue);
-  text-transform: uppercase;
-  font-size: 60px;
+  border-bottom: 2px solid var(--color-blue);
+  width: 100%;
 `;
 
 const WrapperDropDown = styled.select`
@@ -58,15 +50,19 @@ const WrapperDropDown = styled.select`
   color: var(--color-blue);
   font-weight: 900;
   text-align: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 `;
+
 const DropDownItem = styled.option`
-  border: none;
   background: transparent;
-  font-family: hobeaux, sans-serif;
+  font-family: "Hobeaux", sans-serif;
   font-size: 60px;
   text-transform: uppercase;
   color: var(--color-blue);
   font-weight: 900;
+  border: 2px solid var(--color-blue);
   &:hover {
     color: white;
     background: var(--color-blue);

@@ -20,33 +20,41 @@ const ReservationData = ({ seat, resInfo, setResInfo }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [seat]);
+  }, [seat, setResInfo]);
 
   if (!hasLoaded) {
     return <div></div>;
   }
-  console.log(resInfo);
-  const email = resInfo.email;
-  const givenName = resInfo.givenName;
-  const id = resInfo.id;
-  const seatRes = resInfo.seat;
-  const surname = resInfo.surname;
-  const flight = resInfo.flight;
 
   return (
     <PageWrapper>
-      {hasLoaded && (
+      {resInfo ? (
         <Wrapper>
-          <Title>Your reservation information</Title>
-          <Line></Line>
           <WrapperInfo>
-            <TextInfo>Reservation #: {id} </TextInfo>
-            <TextInfo>Flight #: {flight}</TextInfo>
-            <TextInfo>Seat #: {seatRes}</TextInfo>
-            <TextInfo>Given Name: {givenName}</TextInfo>
-            <TextInfo>Surname: {surname}</TextInfo>
-            <TextInfo>Email: {email}</TextInfo>
+            <TextInfo>Reservation #: {resInfo.id} </TextInfo>
+            <TextInfo>Flight #: {resInfo.flight}</TextInfo>
+            <TextInfo>Seat #: {resInfo.seat}</TextInfo>
+            <TextInfo>Given Name: {resInfo.givenName}</TextInfo>
+            <TextInfo>Surname: {resInfo.surname}</TextInfo>
+            <TextInfo>Email: {resInfo.email}</TextInfo>
           </WrapperInfo>
+          <TitleWrapper>
+            <Title>Your reservation information</Title>
+          </TitleWrapper>
+        </Wrapper>
+      ) : (
+        <Wrapper>
+          <WrapperInfo>
+            <Info>
+              You're reservation can't be retreived. Please enter a valid seat
+              number.
+            </Info>
+          </WrapperInfo>
+          <TitleWrapper>
+            <Button onClick={() => window.location.reload(false)}>
+              Click Here to Retry
+            </Button>
+          </TitleWrapper>
         </Wrapper>
       )}
     </PageWrapper>
@@ -57,36 +65,69 @@ const PageWrapper = styled.div`
   justify-content: center;
 `;
 const WrapperInfo = styled.div`
-  margin-top: 50px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 `;
 
 const Wrapper = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-top: -150px;
-  margin-left: -250px;
-  border: 3px solid var(--color-alabama-crimson);
-  width: 500px;
-  height: 300px;
-  border-radius: 10px;
+  border: 2px solid var(--color-blue);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
 `;
 const Title = styled.p`
-  color: var(--color-alabama-crimson);
-  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-blue);
+  font-size: 30px;
   text-align: center;
-  font-weight: bold;
+  font-weight: 900;
   margin-top: 10px;
   margin-bottom: 10px;
+  text-transform: uppercase;
 `;
-const Line = styled.hr`
-  border-bottom: 3px solid var(--color-alabama-crimson);
+const Button = styled.button`
+  border: none;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-blue);
+  font-size: 30px;
+  text-align: center;
+  font-weight: 900;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+`;
+const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  background: white;
+  border-top: 2px solid var(--color-blue);
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  padding: 10px 30px 10px 30px;
+  width: 100%;
 `;
 const TextInfo = styled.p`
   margin-left: 30px;
   margin-bottom: 10px;
   text-align: left;
   font-weight: bold;
+  color: var(--color-blue);
+`;
+const Info = styled.p`
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: var(--color-blue);
+  padding-left: 15px;
+  padding-right: 15px;
 `;
 
 export default ReservationData;

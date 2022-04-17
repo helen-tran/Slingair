@@ -10,8 +10,6 @@ const Confirmation = ({ info }) => {
     <PageWrapper>
       {info.id && (
         <Wrapper>
-          <Title>Your flight is confirmed!</Title>
-          <Line></Line>
           <WrapperInfo>
             <TextInfo>Reservation #: {info.id}</TextInfo>
             <TextInfo>Flight #: {info.flight}</TextInfo>
@@ -21,6 +19,9 @@ const Confirmation = ({ info }) => {
             </TextInfo>
             <TextInfo>Email: {info.email}</TextInfo>
           </WrapperInfo>
+          <TitleWrapper>
+            <Title>Your flight is confirmed!</Title>
+          </TitleWrapper>
         </Wrapper>
       )}
     </PageWrapper>
@@ -29,42 +30,49 @@ const Confirmation = ({ info }) => {
 const PageWrapper = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  margin-top: 80px;
+  margin-bottom: 120px;
+`;
+const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  background: white;
+  border-top: 2px solid var(--color-blue);
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  padding: 10px 30px 10px 30px;
+  width: 100%;
 `;
 const WrapperInfo = styled.div`
-  margin-top: 50px;
+  margin-top: 30px;
+  margin-bottom: 20px;
 `;
 
 const Wrapper = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-top: -150px;
-  margin-left: -250px;
-  border: 3px solid var(--color-alabama-crimson);
+  border: 2px solid var(--color-blue);
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
   width: 500px;
-  height: 300px;
-  border-radius: 10px;
+  justify-content: center;
 `;
 const Title = styled.p`
-  color: var(--color-alabama-crimson);
-  font-size: 20px;
+  color: var(--color-blue);
+  font-size: 30px;
   text-align: center;
   font-weight: bold;
   margin-top: 10px;
   margin-bottom: 10px;
-`;
-const Line = styled.hr`
-  border-bottom: 3px solid var(--color-alabama-crimson);
+  font-weight: 900;
+  text-transform: uppercase;
 `;
 const TextInfo = styled.p`
   margin-left: 30px;
   margin-bottom: 10px;
   text-align: left;
   font-weight: bold;
-`;
-const Image = styled.img`
-  width: 150px;
-  position: fixed;
-  bottom: 90px;
 `;
 export default Confirmation;

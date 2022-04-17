@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
-const InputReservation = ({ seat, setSeat, dataInputted, setDataInputted }) => {
+const InputReservation = ({ seat, setSeat, setDataInputted }) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
@@ -12,6 +11,11 @@ const InputReservation = ({ seat, setSeat, dataInputted, setDataInputted }) => {
     setDataInputted(true);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      setDataInputted(true);
+    }
+  };
   return (
     <PageWrapper>
       <Wrapper>
@@ -19,6 +23,7 @@ const InputReservation = ({ seat, setSeat, dataInputted, setDataInputted }) => {
           type="text"
           placeholder="Seat"
           value={seat}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setSeat(e.target.value)}
           required
         />
@@ -35,11 +40,6 @@ const PageWrapper = styled.div`
   display: flex;
   width: 500px;
   justify-content: center;
-  /* position: fixed;
-  top: 45%;
-  left: 50%;
-  margin-top: -140px;
-  margin-left: -200px; */
 `;
 
 const Wrapper = styled.div`
