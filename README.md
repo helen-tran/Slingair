@@ -3,6 +3,7 @@
 # Introduction
 
 Slingair is an airline site that combines both front-end and back-end. It is used to book your flight and to search up your reservations.
+
 To get started, in the terminal. Enter cd backend, and then hit yarn start. Then cd frontend, and hit yarn start as well.
 
 # Project
