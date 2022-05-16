@@ -4,9 +4,11 @@
 
 Slingair is an airline site that combines both front-end and back-end. It is used to book your flight and to search up your reservations.
 
+The website was designed by me and you can view the figma link [here](https://www.figma.com/file/r799bW7jJIKgnXboUnmH9P/Slingair-Project---Refresh?node-id=4%3A14)
+
 # Project
 
-## Coding Languages
+## Coding Languxages
 
 Slingair uses React.js for the front-end. For the back-end, I use Node.js as well as Mongo.db.
 
