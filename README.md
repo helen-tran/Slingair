@@ -6,6 +6,8 @@ Slingair is an airline site that combines both front-end and back-end. It is use
 
 The website was designed by me and you can view the figma link [here](https://www.figma.com/file/r799bW7jJIKgnXboUnmH9P/Slingair-Project---Refresh?node-id=4%3A14)
 
+To get started, in the terminal. Enter cd backend, and then hit yarn start. Then cd frontend, and hit yarn start as well.
+
 # Project
 
 ## Coding Languxages
